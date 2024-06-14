@@ -1,9 +1,8 @@
 const  express =  require('express');
 const cors =  require('cors');
 const morgan =  require('morgan');
-
 const pty = require('node-pty');
-
+const chokidar = require('chokidar');
 const {Server:SocketServer} = require('socket.io')
 const http = require('http');
  
@@ -43,6 +42,9 @@ var ptyProcess = pty.spawn('bash', [], {
     
     io.attach(server);
 
+    chokidar.watch('./user').on('all', (event, path) => {
+        io.emit('file:refresh', path)
+    });
 
 io.on('connection', (socket)=>{
    
@@ -82,3 +84,5 @@ server.listen(8080, ()=>{
 
     console.log("server started")
 })
+
+

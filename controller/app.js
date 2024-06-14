@@ -1,6 +1,30 @@
-
+const fs = require('fs/promises');
+const path = require('path');
 
 // follow the below pattern for creating controllers for a particular  endpoint
+
+async function generateFileTree(directory) {
+    const tree = {}
+
+    async function buildTree(currentDir, currentTree) {
+        const files = await fs.readdir(currentDir)
+
+        for (const file of files) {
+            const filePath = path.join(currentDir, file)
+            const stat = await fs.stat(filePath)
+
+            if (stat.isDirectory()) {
+                currentTree[file] = {}
+                await buildTree(filePath, currentTree[file])
+            } else {
+                currentTree[file] = null
+            }
+        }
+    }
+
+    await buildTree(directory, tree);
+    return tree
+}
 
 const firstapi = (req,res)=>{
 
@@ -16,5 +40,21 @@ const firstapi = (req,res)=>{
 }
 
 
+const files = async (req,res)=>{
 
-module.exports = {firstapi}; //export all the controllers declared above 
+    try {
+
+       const filetree = await generateFileTree('./user');
+
+       res.json({ tree: filetree })
+        
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+
+
+
+
+module.exports = {firstapi , files}; //export all the controllers declared above 
