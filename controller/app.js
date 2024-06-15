@@ -53,8 +53,20 @@ const files = async (req,res)=>{
     }
 }
 
+const filecontent = async (req,res)=>{
+
+    try {
+        const path = req.query.path;
+        const content = await fs.readFile(`./user${path}`, 'utf-8')
+        res.json({ content })
+        
+    } catch (error) {
+        res.json(error)
+    }
+}
 
 
 
 
-module.exports = {firstapi , files}; //export all the controllers declared above 
+
+module.exports = {firstapi , files, filecontent}; //export all the controllers declared above 

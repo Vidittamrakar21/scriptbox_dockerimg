@@ -4,6 +4,7 @@ const morgan =  require('morgan');
 const pty = require('node-pty');
 const chokidar = require('chokidar');
 const {Server:SocketServer} = require('socket.io')
+const fs = require('fs/promises')
 const http = require('http');
  
 //import all the routes  declared in the routes directory.
@@ -53,6 +54,13 @@ io.on('connection', (socket)=>{
     socket.on('terminal:write',(data)=>{
       
         ptyProcess.write(data);
+    })
+
+    socket.on('file:changed',async ({path, content})=>{
+        console.log("path", path)
+        console.log("content", content)
+      await fs.writeFile(`./user${path}`, content)
+       
     })
 })
 
