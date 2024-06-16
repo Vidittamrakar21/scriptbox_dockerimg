@@ -7,9 +7,16 @@ async function generateFileTree(directory) {
     const tree = {}
 
     async function buildTree(currentDir, currentTree) {
+        
+
+        
         const files = await fs.readdir(currentDir)
 
         for (const file of files) {
+            if (file === 'node_modules') {
+                continue; // Skip the node_modules directory
+            }
+
             const filePath = path.join(currentDir, file)
             const stat = await fs.stat(filePath)
 
@@ -20,6 +27,8 @@ async function generateFileTree(directory) {
                 currentTree[file] = null
             }
         }
+
+     
     }
 
     await buildTree(directory, tree);
