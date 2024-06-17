@@ -13,7 +13,7 @@ async function generateFileTree(directory) {
         const files = await fs.readdir(currentDir)
 
         for (const file of files) {
-            if (file === 'node_modules') {
+            if (file === 'node_modules' || file === '.next' ) {
                 continue; // Skip the node_modules directory
             }
 
