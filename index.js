@@ -43,7 +43,17 @@ var ptyProcess = pty.spawn('bash', [], {
     
     io.attach(server);
 
-   
+    const watcher = chokidar.watch('./user', {
+        ignored: /node_modules/, 
+        persistent: true,
+      });
+
+      watcher
+      .on('add', path => io.emit('file:refresh'))
+      .on('change', path => io.emit('file:refresh'))
+      .on('unlink', path => io.emit('file:refresh'))
+      .on('addDir', path => io.emit('file:refresh'))
+      .on('unlinkDir', path => io.emit('file:refresh'));  
 
 io.on('connection', (socket)=>{
    
