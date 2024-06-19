@@ -43,9 +43,7 @@ var ptyProcess = pty.spawn('bash', [], {
     
     io.attach(server);
 
-    chokidar.watch('./user').on('all', (event, path) => {
-        io.emit('file:refresh', path)
-    });
+   
 
 io.on('connection', (socket)=>{
    
