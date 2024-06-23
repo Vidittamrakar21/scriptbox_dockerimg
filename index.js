@@ -75,7 +75,18 @@ io.on('connection', (socket)=>{
         await socket.join(room);
 
         io.to(room).emit('user-joinded', `${socket.id} joined room ${room}`);
+        console.log(`${socket.id} joined room ${room}`);
 
+    })
+
+    socket.on('send:code', ({room, code})=>{
+        
+        socket.to(room).emit('recieve:code', code);
+    })
+
+    socket.on('send:path', ({room, path})=>{
+
+        io.to(room).emit('recieve:path', path);
     })
 })
 
