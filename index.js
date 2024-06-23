@@ -70,6 +70,13 @@ io.on('connection', (socket)=>{
       await fs.writeFile(`./user${path}`, content)
        
     })
+
+    socket.on('connect-room', async ({room})=>{
+        await socket.join(room);
+
+        io.to(room).emit('user-joinded', `${socket.id} joined room ${room}`);
+
+    })
 })
 
 ptyProcess.onData( data =>{
