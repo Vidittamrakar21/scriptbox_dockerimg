@@ -88,6 +88,11 @@ io.on('connection', (socket)=>{
 
         io.to(room).emit('recieve:path', path);
     })
+
+    socket.on('stat', ({room, name})=>{
+
+        socket.to(room).emit('checkstat', name);
+    })
 })
 
 ptyProcess.onData( data =>{
