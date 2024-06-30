@@ -84,6 +84,11 @@ io.on('connection', (socket)=>{
         socket.to(room).emit('recieve:code', code);
     })
 
+    socket.on('send:splitcode', ({room, code})=>{
+        
+        socket.to(room).emit('recieve:splitcode', code);
+    })
+
     socket.on('send:chat', ({room, chat , name})=>{
         
         socket.to(room).emit('recieve:chat', {chat ,name});
@@ -92,6 +97,11 @@ io.on('connection', (socket)=>{
     socket.on('send:path', ({room, path})=>{
 
         io.to(room).emit('recieve:path', path);
+    })
+
+    socket.on('send:splitpath', ({room, path})=>{
+
+        socket.to(room).emit('recieve:splitpath', path);
     })
 
     socket.on('stat', ({room, name})=>{
